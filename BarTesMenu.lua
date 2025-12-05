@@ -1,221 +1,113 @@
--- BarTes | Developer - UI Menu V2 (Hacker Edition)
--- By BarTes (Updated by ChatGPT)
+--========================================================--
+--            Tes | Baleg Moal - Hacker UI                --
+--                    Developer: Bara Setiawan            --
+--========================================================--
 
-local Players = game:GetService("Players")
-local TweenService = game:GetService("TweenService")
-local player = Players.LocalPlayer
-local gui = player:WaitForChild("PlayerGui")
+local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+ScreenGui.Name = "BalegMoal_UI"
 
-local old = gui:FindFirstChild("BarTesUIV2")
-if old then old:Destroy() end
+-- Main Frame
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 320, 0, 380)
+Main.Position = UDim2.new(0, 20, 0.1, 0)
+Main.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Main.BorderSizePixel = 0
 
-local screen = Instance.new("ScreenGui")
-screen.Name = "BarTesUIV2"
-screen.ResetOnSpawn = false
-screen.Parent = gui
+local UICorner = Instance.new("UICorner", Main)
+UICorner.CornerRadius = UDim.new(0, 8)
 
+-- Title
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1, 0, 0, 40)
+Title.Text = "Tes Script | Baleg Moal"
+Title.TextColor3 = Color3.fromRGB(50, 255, 60)
+Title.BackgroundTransparency = 1
+Title.Font = Enum.Font.Code
+Title.TextSize = 22
 
--- WINDOW
-local window = Instance.new("Frame")
-window.Name = "Window"
-window.Size = UDim2.new(0.65, 0, 0.55, 0)
-window.Position = UDim2.new(0.5, 0, 0.5, 0)
-window.AnchorPoint = Vector2.new(0.5, 0.5)
-window.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
-window.BorderSizePixel = 0
-window.Parent = screen
+-- Developer INFO button
+local DevBtn = Instance.new("TextButton", Main)
+DevBtn.Size = UDim2.new(0, 40, 0, 30)
+DevBtn.Position = UDim2.new(1, -45, 0, 5)
+DevBtn.Text = "©"
+DevBtn.BackgroundColor3 = Color3.fromRGB(0, 255, 70)
+DevBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+DevBtn.Font = Enum.Font.Code
+DevBtn.TextSize = 20
 
-Instance.new("UICorner", window).CornerRadius = UDim.new(0, 12)
+local DevCorner = Instance.new("UICorner", DevBtn)
+DevCorner.CornerRadius = UDim.new(0, 6)
 
+-- Developer Page
+local DevPage = Instance.new("Frame", Main)
+DevPage.Size = UDim2.new(1, -20, 0, 70)
+DevPage.Position = UDim2.new(0, 10, 0, -80) -- hidden
+DevPage.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+DevPage.BorderSizePixel = 0
+DevPage.Visible = false
+Instance.new("UICorner", DevPage)
 
--- TITLE BAR
-local title = Instance.new("Frame")
-title.Size = UDim2.new(1, 0, 0, 36)
-title.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-title.BorderSizePixel = 0
-title.Parent = window
-Instance.new("UICorner", title).CornerRadius = UDim.new(0, 12)
+local Dev1 = Instance.new("TextLabel", DevPage)
+Dev1.Text = "Developer : Bara Setiawan"
+Dev1.TextColor3 = Color3.fromRGB(255, 40, 40)
+Dev1.Position = UDim2.new(0, 10, 0, 5)
+Dev1.Size = UDim2.new(1, -20, 0, 25)
+Dev1.BackgroundTransparency = 1
+Dev1.Font = Enum.Font.Code
+Dev1.TextSize = 16
 
-local titleText = Instance.new("TextLabel")
-titleText.Size = UDim2.new(1, -80, 1, 0)
-titleText.Position = UDim2.new(0, 10, 0, 0)
-titleText.BackgroundTransparency = 1
-titleText.Font = Enum.Font.Code
-titleText.TextSize = 18
-titleText.TextColor3 = Color3.fromRGB(0,255,0)
-titleText.Text = "[ Bara >> Talon | Developer ]"
-titleText.TextXAlignment = Enum.TextXAlignment.Left
-titleText.Parent = title
+local Dev2 = Instance.new("TextLabel", DevPage)
+Dev2.Text = "TEAM : Barlens Studio"
+Dev2.TextColor3 = Color3.fromRGB(40, 255, 50)
+Dev2.Position = UDim2.new(0, 10, 0, 35)
+Dev2.Size = UDim2.new(1, -20, 0, 25)
+Dev2.BackgroundTransparency = 1
+Dev2.Font = Enum.Font.Code
+Dev2.TextSize = 16
 
+-- Toggle Developer Info
+local DevOpen = false
+DevBtn.MouseButton1Click:Connect(function()
+	DevOpen = not DevOpen
 
--- MINIMIZE BUTTON
-local minimize = Instance.new("TextButton")
-minimize.Size = UDim2.new(0, 30, 0, 26)
-minimize.Position = UDim2.new(1, -70, 0.5, 0)
-minimize.AnchorPoint = Vector2.new(1, 0.5)
-minimize.BackgroundColor3 = Color3.fromRGB(40,40,40)
-minimize.Text = "-"
-minimize.Font = Enum.Font.Code
-minimize.TextSize = 24
-minimize.TextColor3 = Color3.fromRGB(0,255,0)
-minimize.Parent = title
-Instance.new("UICorner", minimize)
-
-
--- CLOSE BUTTON
-local close = Instance.new("TextButton")
-close.Size = UDim2.new(0, 30, 0, 26)
-close.Position = UDim2.new(1, -30, 0.5, 0)
-close.AnchorPoint = Vector2.new(1, 0.5)
-close.BackgroundColor3 = Color3.fromRGB(200, 30, 30)
-close.Text = "X"
-close.Font = Enum.Font.Code
-close.TextSize = 20
-close.TextColor3 = Color3.fromRGB(255,255,255)
-close.Parent = title
-Instance.new("UICorner", close)
-
-
-
--- SIDEBAR
-local sidebar = Instance.new("Frame")
-sidebar.Size = UDim2.new(0, 150, 1, -36)
-sidebar.Position = UDim2.new(0, 0, 0, 36)
-sidebar.BackgroundColor3 = Color3.fromRGB(20,20,20)
-sidebar.BorderSizePixel = 0
-sidebar.Parent = window
-
-Instance.new("UICorner", sidebar).CornerRadius = UDim.new(0, 12)
-
-local list = Instance.new("UIListLayout", sidebar)
-list.Padding = UDim.new(0, 4)
-list.FillDirection = Enum.FillDirection.Vertical
-list.SortOrder = Enum.SortOrder.LayoutOrder
-
-
-
--- DEVELOPER INFO
-local devInfo = Instance.new("TextLabel")
-devInfo.Size = UDim2.new(1, -14, 0, 28)
-devInfo.Position = UDim2.new(0, 7, 0, 5)
-devInfo.BackgroundTransparency = 1
-devInfo.Font = Enum.Font.Code
-devInfo.TextSize = 14
-devInfo.TextColor3 = Color3.fromRGB(255, 0, 0)
-devInfo.Text = "Developer: Bara Setiawan"
-devInfo.Parent = sidebar
-
-local studioInfo = Instance.new("TextLabel")
-studioInfo.Size = UDim2.new(1, -14, 0, 22)
-studioInfo.Position = UDim2.new(0, 7, 0, 28)
-studioInfo.BackgroundTransparency = 1
-studioInfo.Font = Enum.Font.Code
-studioInfo.TextSize = 14
-studioInfo.TextColor3 = Color3.fromRGB(0, 255, 0)
-studioInfo.Text = "TEAM: Barlens Studio"
-studioInfo.Parent = sidebar
-
-
-
--- PANEL KONTEN
-local panel = Instance.new("Frame")
-panel.Size = UDim2.new(1, -150, 1, -36)
-panel.Position = UDim2.new(0, 150, 0, 36)
-panel.BackgroundColor3 = Color3.fromRGB(25,25,25)
-panel.BorderSizePixel = 0
-panel.Parent = window
-Instance.new("UICorner", panel).CornerRadius = UDim.new(0,12)
-
-local panelText = Instance.new("TextLabel")
-panelText.Size = UDim2.new(1, -20, 1, -20)
-panelText.Position = UDim2.new(0, 10, 0, 10)
-panelText.BackgroundTransparency = 1
-panelText.Font = Enum.Font.Code
-panelText.TextSize = 22
-panelText.TextColor3 = Color3.fromRGB(0,255,0)
-panelText.TextWrapped = true
-panelText.Text = ">> SYSTEM ONLINE...\n>> Choose module on left panel."
-panelText.Parent = panel
-
-
-
--- GLITCH EFFECT
-local function glitch(t)
-	local chars = {"█","▓","▒","░","Ξ","Ø","≡","≣","+","/","#"}
-	local out = ""
-	for i = 1, #t do
-		if math.random(1,10) <= 2 then
-			out = out .. chars[math.random(#chars)]
-		else
-			out = out .. t:sub(i,i)
-		end
+	if DevOpen then
+		DevPage.Visible = true
+		DevPage:TweenPosition(UDim2.new(0, 10, 0, 45), "Out", "Quad", .3)
+	else
+		DevPage:TweenPosition(UDim2.new(0, 10, 0, -80), "Out", "Quad", .3)
+		wait(.3)
+		DevPage.Visible = false
 	end
-	return out
-end
-
-
--- MENU LIST
-local menus = {"Home","Inventory","Shop","Leaderboards","Settings"}
-
-
--- BUTTON ADDER
-local function addButton(name)
-	local btn = Instance.new("TextButton")
-	btn.Size = UDim2.new(1, -14, 0, 32)
-	btn.Position = UDim2.new(0, 7, 0, 0)
-	btn.Text = name
-	btn.Font = Enum.Font.Code
-	btn.TextSize = 16
-	btn.TextColor3 = Color3.fromRGB(0,255,0)
-	btn.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-	btn.Parent = sidebar
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0,10)
-
-	btn.MouseButton1Click:Connect(function()
-		panelText.Text = glitch(name .. " — Coming Soon")
-		wait(0.05)
-		panelText.Text = name .. " — Coming Soon"
-	end)
-end
-
-for _, name in ipairs(menus) do
-	addButton(name)
-end
-
-
-
--- MINIMIZE
-local minimized = false
-local icon = nil
-
-minimize.MouseButton1Click:Connect(function()
-	if minimized then return end
-	minimized = true
-
-	window.Visible = false
-
-	icon = Instance.new("TextButton")
-	icon.Text = "BarTes"
-	icon.Font = Enum.Font.Code
-	icon.TextSize = 18
-	icon.BackgroundColor3 = Color3.fromRGB(20,20,20)
-	icon.TextColor3 = Color3.fromRGB(0,255,0)
-	icon.Size = UDim2.new(0, 100, 0, 40)
-	icon.Position = UDim2.new(0, 20, 1, -60)
-	icon.Parent = screen
-	Instance.new("UICorner", icon)
-
-	icon.MouseButton1Click:Connect(function()
-		window.Visible = true
-		icon:Destroy()
-		minimized = false
-	end)
 end)
 
+-- Menu List
+local MenuList = {
+	"Main",
+	"Shop",
+	"Teleport",
+	"Config",
+	"Settings"
+}
 
+local Y = 100
 
--- CLOSE
-close.MouseButton1Click:Connect(function()
-	window.Visible = false
-	if icon then icon:Destroy() end
-end)
+for _, name in ipairs(MenuList) do
+	local B = Instance.new("TextButton", Main)
+	B.Size = UDim2.new(1, -20, 0, 35)
+	B.Position = UDim2.new(0, 10, 0, Y)
+	B.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	B.TextColor3 = Color3.fromRGB(0, 255, 120)
+	B.Text = name
+	B.Font = Enum.Font.Code
+	B.TextSize = 20
+	Instance.new("UICorner", B)
+
+	B.MouseButton1Click:Connect(function()
+		game.StarterGui:SetCore("SendNotification",{
+			Title = name,
+			Text = name.." — Coming Soon"
+		})
+	end)
+
+	Y = Y + 42
+end
